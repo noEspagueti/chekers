@@ -1,0 +1,74 @@
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body{
+     display: grid;
+     place-content: center;
+     text-align: center;
+}
+
+.chekers {
+    margin-top: 40px;
+    width: 40%;
+    height: 90vh;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(110px, 1fr));
+    grid-template-rows: repeat(8, 1fr);
+    background-color: gray;
+}
+
+.whiteCells {
+    padding: 10px;
+    background-color: rgb(183, 183, 183);
+    outline: 3px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.blackCells {
+    padding: 10px;
+    background-color: #202020;
+    outline: 3px solid white;
+}
+
+.redParts {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgb(181, 24, 24);
+    cursor: pointer;
+}
+
+/* .redParts::before{
+    content: "asd ";
+    background-color: #fff;
+    width: 40%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+} */
+
+.blackParts {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgb(43, 41, 41);
+    cursor: pointer;
+}
+
+.moves{
+    display: none;
+    cursor: pointer;
+    background-color: gray;
+    border-radius: 50%;
+    width: 50%;
+    height: 50%;
+}  
+
+
