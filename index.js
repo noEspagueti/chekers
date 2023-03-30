@@ -51,7 +51,7 @@ board.addEventListener("click", (event) => {
             piece = event.target;
             let [row, col] = event.target.classList[1].split("");
             showPositions(classCells, parseInt(row), parseInt(col));
-            getEnemyPice(classCells === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", parseInt(row), parseInt(col));
+            // getEnemyPice(classCells === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", parseInt(row), parseInt(col));
             break;
         case "moves":
             movePiece(event.target, piece);
@@ -70,10 +70,10 @@ function getPoints(colorPiece, row, col) {
             return [[row - 1, col], [row - 1, row % 2 === 0 ? col - 1 : col + 1]]
             break;
         case "captureEnemyRed":
-            return [[row + 1, row % 2 != 0 ? col + 1 : col - 1], [row + 1, col], [row + 2, row % 2 != 0 ? col + 1 : col - 1], [row + 2, col]];
+            return [[row + 2, row % 2 != 0 ? col + 1 : col - 1], [row + 2, col + 1]];
             break;
         case "captureEnemyBlack":
-            return [[row - 1, col], [row - 1, row % 2 === 0 ? col - 1 : col + 1], [row - 2, col + 1], [row - 2, row % 2 === 0 ? col - 1 : col + 1]]
+            return [[row - 2, col + 1], [row - 2, row % 2 === 0 ? col - 1 : col - 1]]
             break;
     }
 }
@@ -88,6 +88,10 @@ function showPositions(colorPiece, row, col) {
                 list.style.display = "block";
             }
         });
+        let currentPiece = document.getElementsByClassName(`${item.join("")}`);
+        if (currentPiece[0].classList[0] === "redParts" || currentPiece[0].classList[0] === "blackParts") {
+            getEnemyPice(colorPiece === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", row, col);
+        }
     });
 }
 
@@ -96,7 +100,7 @@ function getEnemyPice(currentPiece, row, col) {
     let move = getPoints(currentPiece, row, col);
     move.forEach(item => {
         let currentPointEnemy = document.getElementsByClassName(`${item.join("")}`);
-        if (currentPointEnemy.length && (currentPointEnemy[0].classList[0] === "redParts" || currentPointEnemy[0].classList[0] === "blackParts")) {
+        if (currentPointEnemy.length && (currentPointEnemy[0].classList[0] === "moves")) {
             console.log(currentPointEnemy);
         }
     });
