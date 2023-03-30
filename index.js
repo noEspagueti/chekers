@@ -73,7 +73,7 @@ function getPoints(colorPiece, row, col) {
             return [[row + 1, row % 2 != 0 ? col + 1 : col - 1], [row + 1, col], [row + 2, row % 2 != 0 ? col + 1 : col - 1], [row + 2, col]];
             break;
         case "captureEnemyBlack":
-            return [[row - 1, col], [row - 1, row % 2 === 0 ? col - 1 : col + 1], [row - 2, col], [row - 2, row % 2 === 0 ? col - 1 : col + 1]]
+            return [[row - 1, col], [row - 1, row % 2 === 0 ? col - 1 : col + 1], [row - 2, col + 1], [row - 2, row % 2 === 0 ? col - 1 : col + 1]]
             break;
     }
 }
@@ -96,7 +96,9 @@ function getEnemyPice(currentPiece, row, col) {
     let move = getPoints(currentPiece, row, col);
     move.forEach(item => {
         let currentPointEnemy = document.getElementsByClassName(`${item.join("")}`);
-        
+        if (currentPointEnemy.length && (currentPointEnemy[0].classList[0] === "redParts" || currentPointEnemy[0].classList[0] === "blackParts")) {
+            console.log(currentPointEnemy);
+        }
     });
 }
 
