@@ -51,7 +51,6 @@ board.addEventListener("click", (event) => {
             piece = event.target;
             let [row, col] = event.target.classList[1].split("");
             showPositions(classCells, parseInt(row), parseInt(col));
-            // getEnemyPice(classCells === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", parseInt(row), parseInt(col));
             break;
         case "moves":
             movePiece(event.target, piece);
@@ -83,27 +82,50 @@ function showPositions(colorPiece, row, col) {
     document.querySelectorAll('.moves').forEach(item => item.style.display = "none");
     let moves = getPoints(colorPiece, row, col);
     moves.map((item) => {
-        document.querySelectorAll('.moves').forEach((list) => {
-            if (list.classList[1] === item.join("")) {
-                list.style.display = "block";
+        showPointers(item);
+        let currentEnemy = document.getElementsByClassName(`${item.join("")}`);
+        if (currentEnemy.length) {
+            if (currentEnemy[0].classList[0] !== "moves" && currentEnemy[0].classList[0] !== colorPiece) {
+                let setColor = colorPiece === "redParts" ? "captureEnemyRed" : "captureEnemyBlack";
+                getEnemyPice(setColor, row, col, true, currentEnemy[0]);
             }
-        });
-        let currentPiece = document.getElementsByClassName(`${item.join("")}`);
-        if (currentPiece[0].classList[0] === "redParts" || currentPiece[0].classList[0] === "blackParts") {
-            getEnemyPice(colorPiece === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", row, col);
         }
     });
 }
 
 //this fucion capture enemy pieces
-function getEnemyPice(currentPiece, row, col) {
+function getEnemyPice(currentPiece, row, col, isCaptureEnemy, enemy) {
     let move = getPoints(currentPiece, row, col);
     move.forEach(item => {
         let currentPointEnemy = document.getElementsByClassName(`${item.join("")}`);
-        if (currentPointEnemy.length && (currentPointEnemy[0].classList[0] === "moves")) {
-            console.log(currentPointEnemy);
+        if (currentPointEnemy.length) {
+            if ((currentPointEnemy[0].classList[0] !== "moves")) return;
+            move.map((item) => {
+                showPointers(item, isCaptureEnemy, enemy);
+            });
         }
     });
+}
+
+//this function show posinter for each element that was selected
+function showPointers(item, isCaptureEnemy, enemy) {
+    document.querySelectorAll('.moves').forEach((list) => {
+        if (list.classList[1] === item.join("")) {
+            list.style.display = "block";
+            if (isCaptureEnemy) {
+                enemy.classList.add("enemyMoves");
+            }
+        }
+    });
+}
+
+//this function delete the enemy selected
+function captureEnemy() {
+    let enemyPiece = document.getElementsByClassName("enemyMoves");
+    if (!!enemyPiece) {
+        console.log(enemyPiece[0].classList[0]);
+        enemyPiece[0].classList.replace(enemyPiece[0].classList[0], "moves");
+    }
 }
 
 //this function move the peices
@@ -116,55 +138,10 @@ function movePiece(element, lastPiece) {
     parentPiece.appendChild(element);
     lastPiece.classList.replace(indexPiece, indexElement);
     element.classList.replace(indexElement, indexPiece);
+    captureEnemy();
 }
+
 
 
 //by NoEspagueti
 //https://github.com/noEspagueti
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//note:
-// function captureEnemyPiece(movesPositions, colorCurrentPiece) {
-//     movesPositions.forEach(item => {
-//         let [currenRow, currentCol] = item;
-//         let currentElemento = document.getElementsByClassName(`${item.join("")}`)
-//         if (currentElemento.length && (currentElemento[0].classList[0] === "redParts" || currentElemento[0].classList[0] === "blackParts")) {
-//             if (currentElemento[0].classList[0] === colorCurrentPiece) return;
-//             let [row, col] = currentElemento[0].classList[1].split("");
-//             let move = getPoints(colorCurrentPiece === "redParts" ? "captureEnemyRed" : "captureEnemyBlack", parseInt(row), parseInt(col));
-//             move.forEach(item => {
-//                 let currentPointEnemy = document.getElementsByClassName(`${item.join("")}`);
-//                 if (currentPointEnemy[0].classList[0] === "moves") {
-//                     console.log(currentPointEnemy);
-//                     console.log(currentPointEnemy[0].classList[0]);
-//                 }
-//             });
-//         }
-//     });
-// }
