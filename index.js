@@ -49,12 +49,14 @@ board.addEventListener("click", (event) => {
     switch (classCells) {
         case "redParts": case "blackParts":
             piece = event.target;
+            piece.classList.remove("enemyMoves");
             let [row, col] = event.target.classList[1].split("");
             showPositions(classCells, parseInt(row), parseInt(col));
             break;
         case "moves":
             movePiece(event.target, piece);
             document.querySelectorAll('.moves').forEach(item => item.style.display = "none");
+            captureEnemy();
             break;
     }
 });
@@ -122,9 +124,9 @@ function showPointers(item, isCaptureEnemy, enemy) {
 //this function delete the enemy selected
 function captureEnemy() {
     let enemyPiece = document.getElementsByClassName("enemyMoves");
-    if (!!enemyPiece) {
-        console.log(enemyPiece[0].classList[0]);
+    if (!!enemyPiece[0]) {
         enemyPiece[0].classList.replace(enemyPiece[0].classList[0], "moves");
+        enemyPiece[0].classList.remove("enemyMoves");
     }
 }
 
@@ -138,7 +140,6 @@ function movePiece(element, lastPiece) {
     parentPiece.appendChild(element);
     lastPiece.classList.replace(indexPiece, indexElement);
     element.classList.replace(indexElement, indexPiece);
-    captureEnemy();
 }
 
 
