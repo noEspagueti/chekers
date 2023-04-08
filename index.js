@@ -1,4 +1,4 @@
-let piece; // this variable capture the last piece that was selected
+let piece; // this variable capture the last piece (red or black) that was selected
 
 const board = document.querySelector('.chekers');
 
@@ -49,9 +49,9 @@ board.addEventListener("click", (event) => {
     switch (classCells) {
         case "redParts": case "blackParts":
             piece = event.target;
-            piece.classList.remove("enemyMoves");
+            document.querySelectorAll(".enemyMoves").forEach(item => item.classList.remove("enemyMoves"));
             let [row, col] = event.target.classList[1].split("");
-            showPositions(classCells, parseInt(row), parseInt(col));
+            showPositions(classCells, parseInt(row), parseInt(col), piece);
             break;
         case "moves":
             movePiece(event.target, piece);
@@ -80,7 +80,7 @@ function getPoints(colorPiece, row, col) {
 }
 
 //This function displays every time a cell that has a piece is clicked
-function showPositions(colorPiece, row, col) {
+function showPositions(colorPiece, row, col, currentPiece) {
     document.querySelectorAll('.moves').forEach(item => item.style.display = "none");
     let moves = getPoints(colorPiece, row, col);
     moves.map((item) => {
@@ -89,22 +89,26 @@ function showPositions(colorPiece, row, col) {
         if (currentEnemy.length) {
             if (currentEnemy[0].classList[0] !== "moves" && currentEnemy[0].classList[0] !== colorPiece) {
                 let setColor = colorPiece === "redParts" ? "captureEnemyRed" : "captureEnemyBlack";
-                getEnemyPice(setColor, row, col, true, currentEnemy[0]);
+                getEnemyPice(setColor, row, col, true, currentEnemy[0], currentPiece);
             }
         }
     });
 }
 
-//this fucion capture enemy pieces
-function getEnemyPice(currentPiece, row, col, isCaptureEnemy, enemy) {
-    let move = getPoints(currentPiece, row, col);
+//this function capture enemy pieces
+function getEnemyPice(currentColorPiece, row, col, isCaptureEnemy, enemy, currentPiece) {
+    let move = getPoints(currentColorPiece, row, col);
+    let indexCurrentPiece = parseInt(currentPiece.classList[1]);
+    let indexEnemy = parseInt(enemy.classList[1]);
+    let referenceDirection = Math.abs(indexCurrentPiece - indexEnemy);
     move.forEach(item => {
         let currentPointEnemy = document.getElementsByClassName(`${item.join("")}`);
+        let pointerEnemy = parseInt(item.join(""));
+        let trueDirection = (currentPiece.classList[0] === "redParts" ? indexEnemy + referenceDirection - 1 : indexEnemy - referenceDirection + 1);
         if (currentPointEnemy.length) {
-            if ((currentPointEnemy[0].classList[0] !== "moves")) return;
-            move.map((item) => {
+            if ((currentPointEnemy[0].classList[0] === "moves") && (pointerEnemy === trueDirection)) {
                 showPointers(item, isCaptureEnemy, enemy);
-            });
+            }
         }
     });
 }
