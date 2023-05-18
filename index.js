@@ -134,7 +134,7 @@ function captureEnemy() {
     }
 }
 
-//this function move the peices
+//this function move the pieces
 function movePiece(element, lastPiece) {
     let indexElement = element.classList[1];
     let indexPiece = lastPiece.classList[1];
